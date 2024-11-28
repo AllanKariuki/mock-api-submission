@@ -77,13 +77,11 @@ router.post('/login', [
 
   try {
     const { email, password } = req.body;
-
     // Find user
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -105,6 +103,7 @@ router.post('/login', [
       userId: user.id
     });
   } catch (error) {
+    console.log(error)
     logger.error('Login error', { error });
     res.status(500).json({ message: 'Server error during login' });
   }
