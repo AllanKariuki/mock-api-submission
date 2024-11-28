@@ -1,6 +1,7 @@
 const { sequelize, User, Transaction } = require('../../models');
 const { Op } = require('sequelize');
 const { logger } = require('../services/loggingService');
+const { sendTransactionNotification } = require('../services/queueingService');
 // const mqService = require('../services/mqService');
 
 // Transfer funds between accounts
@@ -53,12 +54,12 @@ const transferFunds = async ({ sender_id, recipient_id, amount, description }) =
     });
 
     // Send message to queue (optional)
-    // await mqService.sendTransactionNotification({
-    //   type: 'TRANSFER',
-    //   sender_id,
-    //   recipient_id,
-    //   amount
-    // });
+    await sendTransactionNotification({
+      type: 'TRANSFER',
+      sender_id,
+      recipient_id,
+      amount
+    });
 
     return {
       success: true,
@@ -192,12 +193,12 @@ const simulateMpesaTransaction = async ({ user_id, phone_number, amount, transac
     });
 
     // Send message to queue
-    // await mqService.sendTransactionNotification({
-    //   type: `MPESA_${transaction_type}`,
-    //   user_id,
-    //   phone_number,
-    //   amount
-    // });
+    await sendTransactionNotification({
+      type: `MPESA_${transaction_type}`,
+      user_id,
+      phone_number,
+      amount
+    });
 
     return {
       success: true,
