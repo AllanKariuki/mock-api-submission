@@ -60,7 +60,7 @@ router.get('/history', authMiddleware, async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
     const transactions = await transactionController.getTransactionHistory(
-      req.user.id,
+      req.user.userId,
       parseInt(page),
       parseInt(limit)
     );

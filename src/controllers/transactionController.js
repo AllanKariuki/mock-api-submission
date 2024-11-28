@@ -1,8 +1,10 @@
 const { sequelize, User, Transaction } = require('../../models');
-const { Op } = require('sequelize');
+// const { Op } = require('sequelize');
 const { logger } = require('../services/loggingService');
 const { sendTransactionNotification } = require('../services/queueingService');
 // const mqService = require('../services/mqService');
+const {Sequelize} = require("sequelize");
+const { Op } = Sequelize;
 
 // Transfer funds between accounts
 const transferFunds = async ({ sender_id, recipient_id, amount, description }) => {
@@ -111,7 +113,6 @@ const getAccountBalance = async (user_id) => {
 const getTransactionHistory = async (user_id, page = 1, limit = 10) => {
   try {
     const offset = (page - 1) * limit;
-
     const transactions = await Transaction.findAndCountAll({
       where: {
         [Op.or]: [
@@ -143,6 +144,7 @@ const getTransactionHistory = async (user_id, page = 1, limit = 10) => {
 
     return transactions;
   } catch (error) {
+    console.log(error)
     logger.error('Error retrieving transaction history', {
       user_id,
       error: error.message

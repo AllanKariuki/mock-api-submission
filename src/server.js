@@ -5,8 +5,12 @@ const authRoutes = require('./routes/authRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const loggingService = require('./services/loggingService');
 const PORT = process.env.PORT || 3000;
+const { User } = require('../models');
+const { Transaction } = require('../models');
 dotenv.config();
 
+User.associate({ Transaction });
+Transaction.associate({ User });
 const app = express();
 
 // Middleware
