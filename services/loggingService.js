@@ -2,10 +2,10 @@ const winston = require('winston');
 const path = require('path');
 require('winston-daily-rotate-file');
 
-// Create logs directory if it doesn't exist
+// Ensure logs directory exists
 const logDir = path.join(__dirname, '../logs');
 
-// Configure transports
+// Create log transports
 const fileRotateTransport = new winston.transports.DailyRotateFile({
   filename: path.join(logDir, 'application-%DATE%.log'),
   datePattern: 'YYYY-MM-DD',
@@ -39,18 +39,30 @@ const logger = winston.createLogger({
   ]
 });
 
+// Safe stringify function
+const safeStringify = (obj) => {
+  try {
+    return typeof obj === 'string' ? obj : JSON.stringify(obj);
+  } catch {
+    return String(obj);
+  }
+};
+
 // Middleware for request logging
 const requestLogger = (req, res, next) => {
   const { method, url, body } = req;
+  const startTime = Date.now();
 
+  // Log request
   logger.info(`Request: ${method} ${url}`, {
-    body: body ? JSON.stringify(body) : 'No body',
+    body: body ? safeStringify(body) : 'No body',
     headers: req.headers
   });
 
   // Capture response
   const oldWrite = res.write;
   const oldEnd = res.end;
+
   const chunks = [];
 
   res.write = function(chunk) {
@@ -59,15 +71,28 @@ const requestLogger = (req, res, next) => {
   };
 
   res.end = function(chunk) {
-    if (chunk) chunks.push(chunk);
+    if (chunk) {
+      chunks.push(chunk);
+    }
 
-    const body = Buffer.concat(chunks).toString('utf8');
+    // Convert chunks to string safely
+    let responseBody = '';
+    try {
+      const buffer = Buffer.concat(chunks);
+      responseBody = buffer.toString('utf8');
+    } catch (error) {
+      responseBody = 'Unable to parse response';
+      logger.warn('Error parsing response body', { error: error.message });
+    }
+
+    // Log response
     logger.info(`Response: ${method} ${url}`, {
       status: res.statusCode,
-      body: body
+      duration: Date.now() - startTime + 'ms',
+      body: responseBody ? safeStringify(responseBody).slice(0, 1000) : 'No body'
     });
 
-    oldEnd.apply(res, arguments);
+    return oldEnd.apply(res, arguments);
   };
 
   next();

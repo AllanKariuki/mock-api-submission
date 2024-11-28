@@ -94,7 +94,6 @@ const getAccountBalance = async (user_id) => {
     if (!user) {
       throw new Error('User not found');
     }
-
     logger.info(`Balance retrieved for user ${user_id}`);
 
     return user.account_balance;

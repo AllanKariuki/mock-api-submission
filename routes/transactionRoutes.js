@@ -19,7 +19,7 @@ router.post('/transfer', [
 
   try {
     const { recipient_id, amount, description } = req.body;
-    const sender_id = req.user.id;
+    const sender_id = req.user.userId;
 
     const result = await transactionController.transferFunds({
       sender_id,
@@ -41,7 +41,7 @@ router.post('/transfer', [
 // Get Account Balance (Protected Route)
 router.get('/balance', authMiddleware, async (req, res) => {
   try {
-    const balance = await transactionController.getAccountBalance(req.user.id);
+    const balance = await transactionController.getAccountBalance(req.user.userId);
     res.json({
       success: true,
       balance: balance
@@ -97,7 +97,7 @@ router.post('/simulate-mpesa', [
     const { phone_number, amount, transaction_type } = req.body;
 
     const result = await transactionController.simulateMpesaTransaction({
-      user_id: req.user.id,
+      user_id: req.user.userId,
       phone_number,
       amount,
       transaction_type
