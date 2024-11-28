@@ -1,4 +1,4 @@
-const { sequelize, User, Transaction } = require('../models');
+const { sequelize, User, Transaction } = require('../../models');
 const { Op } = require('sequelize');
 const { logger } = require('../services/loggingService');
 // const mqService = require('../services/mqService');

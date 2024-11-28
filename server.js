@@ -1,9 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const { sequelize } = require('./models');
-const authRoutes = require('./routes/authRoutes');
-const transactionRoutes = require('./routes/transactionRoutes');
-const loggingService = require('./services/loggingService');
+const authRoutes = require('./src/routes/authRoutes');
+const transactionRoutes = require('./src/routes/transactionRoutes');
+const loggingService = require('./src/services/loggingService');
 const PORT = process.env.PORT || 3000;
 dotenv.config();
 

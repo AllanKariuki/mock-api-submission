@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\LENOVO\\Documents\\SoftwareEngineering\\mock-api-submission\\src\\logs\\.0028d0275b8a36c03ba1193e60e731b6f2e4ec03-audit.json",
+    "files": [
+        {
+            "date": 1732782744433,
+            "name": "C:\\Users\\LENOVO\\Documents\\SoftwareEngineering\\mock-api-submission\\src\\logs\\application-2024-11-28.log",
+            "hash": "53420cc9a6db3735e8ec92f724a20bffc8a8dca2a95da95aaa6d15fc63468c83"
+        }
+    ],
+    "hashType": "sha256"
+}
