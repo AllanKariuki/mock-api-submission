@@ -37,6 +37,8 @@ Build and start the application using Docker compose:
 docker-compose up --build
 ```
 
+Change the value of the DB_HOST environment variable in the .env file to localhost if you are not using Docker.
+
 ### Without Docker
 Start the application without Docker:
 ```bash
