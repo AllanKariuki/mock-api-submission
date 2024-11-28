@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "postgres",
-    "password": "Allan@2001",
+    "password": "your_password",
     "database": "transaction_db",
-    "host": "localhost",
+    "host": "postgres",
     "dialect": "postgres"
   },
   "test": {
