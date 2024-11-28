@@ -14,10 +14,10 @@ module.exports = (req, res, next) => {
   try {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    console.log('decoded', decoded)
     // Add user from payload
     req.user = decoded;
-
+    console.log('req.user', req.user)
     // Log authentication
     logger.info(`User authenticated: ${decoded.userId}`);
 

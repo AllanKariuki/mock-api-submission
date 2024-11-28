@@ -103,7 +103,6 @@ router.post('/login', [
       userId: user.id
     });
   } catch (error) {
-    console.log(error)
     logger.error('Login error', { error });
     res.status(500).json({ message: 'Server error during login' });
   }
@@ -112,7 +111,7 @@ router.post('/login', [
 // Get User Profile (Protected Route)
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findByPk(req.user.id, {
+    const user = await User.findByPk(req.user.userId, {
       attributes: ['id', 'username', 'email', 'phone_number', 'account_balance']
     });
 
